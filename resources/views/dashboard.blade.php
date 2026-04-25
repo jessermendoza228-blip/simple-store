@@ -1,27 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Dashboard</title>
-</head>
-<body>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
 
-    <h1>Admin Dashboard</h1>
-
-    <p>Welcome, {{ Auth::user()->name }} 👋</p>
-
-    <hr>
-
-    <h2>System Overview</h2>
-
-    <ul>
-        <li>Total Users: (coming soon)</li>
-        <li>Total Products: (coming soon)</li>
-        <li>Total Orders: (coming soon)</li>
-    </ul>
-
-    <hr>
-
-    <a href="{{ route('products.index') }}">Go to Products Page</a>
-
-</body>
-</html>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    {{ __("You're logged in!") }}
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>

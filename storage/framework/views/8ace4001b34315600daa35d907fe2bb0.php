@@ -37,29 +37,29 @@
 
 <h1>Products</h1>
 
-<a href="{{ route('admin.products.create') }}" class="btn">
+<a href="<?php echo e(route('admin.products.create')); ?>" class="btn">
     + Add Product
 </a>
 
 <div class="grid">
 
-@foreach($products as $product)
+<?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
     <div class="card">
-        <h3>{{ $product->name }}</h3>
-        <p>₱{{ $product->price }}</p>
-        <p>Stock: {{ $product->stock }}</p>
+        <h3><?php echo e($product->name); ?></h3>
+        <p>₱<?php echo e($product->price); ?></p>
+        <p>Stock: <?php echo e($product->stock); ?></p>
 
         <div class="actions">
-            <a href="{{ route('admin.products.edit', $product->id) }}">
+            <a href="<?php echo e(route('admin.products.edit', $product->id)); ?>">
                 Edit
             </a>
 
             <form method="POST"
-                  action="{{ route('admin.products.destroy', $product->id) }}"
+                  action="<?php echo e(route('admin.products.destroy', $product->id)); ?>"
                   style="display:inline;">
-                @csrf
-                @method('DELETE')
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('DELETE'); ?>
 
                 <button onclick="return confirm('Delete this product?')">
                     Delete
@@ -68,9 +68,9 @@
         </div>
     </div>
 
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 </div>
 
 </body>
-</html>
+</html><?php /**PATH C:\laragon\www\simple-store\resources\views/admin/products/index.blade.php ENDPATH**/ ?>

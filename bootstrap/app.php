@@ -13,12 +13,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // ✅ REGISTER ADMIN MIDDLEWARE ALIAS
         $middleware->alias([
-            'admin' => AdminMiddleware::class,
-        ]);
+    'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+    'is_admin' => \App\Http\Middleware\IsAdmin::class,
+    'admin' => \App\Http\Middleware\AdminMiddleware::class,
+]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();
