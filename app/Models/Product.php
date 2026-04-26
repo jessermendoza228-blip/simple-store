@@ -18,4 +18,10 @@ class Product extends Model
         'stock',
         'image'
     ];
+
+    // FIX: category relationship (THIS WAS YOUR ERROR)
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

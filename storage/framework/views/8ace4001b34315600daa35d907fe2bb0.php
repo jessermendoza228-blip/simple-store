@@ -1,76 +1,205 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Admin Products</title>
 
-    <style>
-        body { font-family: Arial; margin: 20px; }
 
-        .btn {
-            background: green;
-            color: white;
-            padding: 8px 12px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
+<?php $__env->startSection('content'); ?>
+
+<style>
+    body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui;
+        background: radial-gradient(circle at top, #111827 0%, #0b1220 100%);
+        color: #e5e7eb;
+    }
+
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px;
+    }
+
+    /* TITLE */
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 25px;
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+    }
+
+    /* CARD */
+    .card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 18px;
+        backdrop-filter: blur(12px);
+        transition: 0.25s ease;
+
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeUp 0.5s ease forwards;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(59,130,246,0.4);
+    }
+
+    .card h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .card p {
+        color: #9ca3af;
+        font-size: 14px;
+        margin-top: 8px;
+        line-height: 1.4;
+    }
+
+    .meta {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* BUTTONS */
+    .btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(59,130,246,0.2);
+        border: 1px solid rgba(59,130,246,0.4);
+        color: #93c5fd;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .btn:hover {
+        background: rgba(59,130,246,0.35);
+        transform: translateY(-2px);
+    }
+
+    .actions {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .actions a {
+        font-size: 12px;
+        color: #60a5fa;
+        text-decoration: none;
+    }
+
+    .actions a:hover {
+        text-decoration: underline;
+    }
+
+    .actions button {
+        background: transparent;
+        border: 1px solid rgba(239,68,68,0.5);
+        color: #f87171;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .actions button:hover {
+        background: rgba(239,68,68,0.15);
+    }
+
+    /* EMPTY */
+    .empty {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 40px;
+        text-align: center;
+        border-radius: 18px;
+        color: #9ca3af;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
         }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 20px;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
+    }
+</style>
 
-        .card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-        }
+<div class="container">
 
-        .actions a {
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
+    <h1>Products</h1>
 
-<h1>Products</h1>
+    <a href="<?php echo e(route('admin.products.create')); ?>" class="btn">
+        + Add Product
+    </a>
 
-<a href="<?php echo e(route('admin.products.create')); ?>" class="btn">
-    + Add Product
-</a>
+    <div class="grid">
 
-<div class="grid">
+        <?php $__empty_1 = true; $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 
-<?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="card">
 
-    <div class="card">
-        <h3><?php echo e($product->name); ?></h3>
-        <p>₱<?php echo e($product->price); ?></p>
-        <p>Stock: <?php echo e($product->stock); ?></p>
+                <h3><?php echo e($product->name); ?></h3>
 
-        <div class="actions">
-            <a href="<?php echo e(route('admin.products.edit', $product->id)); ?>">
-                Edit
-            </a>
+                <p>Price: ₱<?php echo e($product->price); ?></p>
+                <p>Stock: <?php echo e($product->stock); ?></p>
 
-            <form method="POST"
-                  action="<?php echo e(route('admin.products.destroy', $product->id)); ?>"
-                  style="display:inline;">
-                <?php echo csrf_field(); ?>
-                <?php echo method_field('DELETE'); ?>
+                <?php if($product->category): ?>
+                    <p>Category: <?php echo e($product->category->name); ?></p>
+                <?php endif; ?>
 
-                <button onclick="return confirm('Delete this product?')">
-                    Delete
-                </button>
-            </form>
-        </div>
+                <div class="meta">
+                    Product ID: #<?php echo e($product->id); ?>
+
+                </div>
+
+                <div class="actions">
+
+                    <a href="<?php echo e(route('admin.products.edit', $product->id)); ?>">
+                        Edit
+                    </a>
+
+                    <form method="POST"
+                          action="<?php echo e(route('admin.products.destroy', $product->id)); ?>"
+                          onsubmit="return confirm('Delete this product?')">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
+
+                        <button type="submit">Delete</button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+
+            <div class="empty">
+                No products found yet.
+            </div>
+
+        <?php endif; ?>
+
     </div>
-
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 </div>
 
-</body>
-</html><?php /**PATH C:\laragon\www\simple-store\resources\views/admin/products/index.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\simple-store\resources\views/admin/products/index.blade.php ENDPATH**/ ?>

@@ -2,53 +2,153 @@
 
 @section('content')
 
-<div class="flex justify-between items-center mb-4">
+<style>
+    body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui;
+        background: radial-gradient(circle at top, #111827 0%, #0b1220 100%);
+        color: #e5e7eb;
+    }
 
-    <h1 class="text-2xl font-bold">Products</h1>
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px;
+    }
 
-    <a href="{{ route('admin.products.create') }}"
-       class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        + Add Product
-    </a>
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
 
-</div>
+    /* TABLE WRAPPER */
+    .table-wrapper {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+    }
 
-<div class="bg-white shadow rounded overflow-hidden">
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-    <table class="w-full">
+    thead {
+        background: rgba(0,0,0,0.4);
+    }
 
-        <thead class="bg-gray-800 text-white">
-            <tr>
-                <th class="p-3 text-left">Name</th>
-                <th class="p-3 text-left">Price</th>
-                <th class="p-3 text-left">Stock</th>
-                <th class="p-3 text-left">Actions</th>
-            </tr>
-        </thead>
+    th, td {
+        padding: 14px;
+        text-align: left;
+        font-size: 14px;
 
-        <tbody>
+        /* ✅ FIX ADDED HERE */
+        color: #ffffff;
+    }
 
-      @foreach($orders as $order)
-<tr class="border-b hover:bg-gray-100">
+    tbody tr {
+        border-top: 1px solid rgba(255,255,255,0.08);
+        transition: 0.2s ease;
+    }
 
-    <td class="p-3">{{ $order->id }}</td>
-    <td class="p-3">{{ $order->user->name ?? 'Guest' }}</td>
-    <td class="p-3">₱{{ $order->total_amount }}</td>
-    <td class="p-3">{{ $order->status }}</td>
+    tbody tr:hover {
+        background: rgba(255,255,255,0.05);
+        transform: scale(1.01);
+    }
 
-    <td class="p-3">
-        <a href="{{ route('admin.orders.show', $order->id) }}"
-           class="bg-blue-500 text-white px-3 py-1 rounded">
-            View
-        </a>
-    </td>
+    /* BUTTON */
+    .btn {
+        background: rgba(219, 219, 219, 0.2);
+        border: 1px solid rgba(59,130,246,0.4);
+        color: #ffffff;
+        padding: 8px 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s ease;
+        display: inline-block;
+    }
 
-</tr>
-@endforeach
+    .btn:hover {
+        background: rgba(59,130,246,0.35);
+        transform: translateY(-2px);
+    }
 
-        </tbody>
+    /* STATUS BADGE */
+    .badge {
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: rgba(34,197,94,0.15);
+        color: #ffffff;
+        border: 1px solid rgba(34,197,94,0.3);
+    }
 
-    </table>
+</style>
+
+<div class="container">
+
+    <h1>Orders</h1>
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            @forelse($orders as $order)
+
+                <tr>
+
+                    <td>#{{ $order->id }}</td>
+
+                    <td>{{ $order->user->name ?? 'Guest' }}</td>
+
+                    <td>₱{{ number_format($order->total, 2) }}</td>
+
+                    <td>
+                        <span class="badge">
+                            {{ $order->status ?? 'Completed' }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <a href="{{ route('admin.orders.show', $order->id) }}"
+                           class="btn">
+                            View
+                        </a>
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:20px; color:#9ca3af;">
+                        No orders found
+                    </td>
+                </tr>
+
+            @endforelse
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

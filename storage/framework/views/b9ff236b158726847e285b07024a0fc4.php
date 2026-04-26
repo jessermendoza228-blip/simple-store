@@ -1,38 +1,234 @@
-<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
-<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('app-layout'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-     <?php $__env->slot('header', null, []); ?> 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <?php echo e(__('Dashboard')); ?>
+<?php $__env->startSection('content'); ?>
 
-        </h2>
-     <?php $__env->endSlot(); ?>
+<style>
+    body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        color: #e5e7eb;
+        background: radial-gradient(circle at top, #1f2937 0%, #0f172a 100%);
+    }
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <?php echo e(__("You're logged in!")); ?>
+    .dashboard {
+        max-width: 1100px;
+        margin: auto;
+        padding: 40px 24px;
+    }
 
-                </div>
+    /* TITLE */
+    .title {
+        font-size: 36px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        letter-spacing: -1px;
+
+        background: linear-gradient(90deg, #ffffff, #9ca3af);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        animation: fadeDown 0.6s ease;
+    }
+
+    .subtitle {
+        color: #9ca3af;
+        margin-bottom: 28px;
+        font-size: 14px;
+    }
+
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 30px;
+    }
+
+    /* CARD */
+    .card {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 22px;
+
+        backdrop-filter: blur(12px);
+
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+        transition: all 0.25s ease;
+
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.6s ease forwards;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(255,255,255,0.2);
+        box-shadow: 0 18px 50px rgba(0,0,0,0.5);
+    }
+
+    .label {
+        font-size: 13px;
+        color: #9ca3af;
+        margin-bottom: 6px;
+    }
+
+    .value {
+        font-size: 28px;
+        font-weight: 800;
+        color: #ffffff;
+    }
+
+    /* SECTION */
+    .section {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 16px;
+        padding: 22px;
+
+        backdrop-filter: blur(10px);
+    }
+
+    .section h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 14px;
+        color: #f3f4f6;
+    }
+
+    /* ACTIONS */
+    .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+
+        font-size: 14px;
+        color: #cbd5e1;
+
+        transition: 0.2s ease;
+    }
+
+    .item:hover {
+        transform: translateX(6px);
+        color: #ffffff;
+    }
+
+    .item:last-child {
+        border-bottom: none;
+    }
+
+    /* BUTTON */
+    .btn {
+        padding: 7px 14px;
+        border-radius: 10px;
+
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+        color: white;
+
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+
+        transition: 0.2s ease;
+        box-shadow: 0 10px 20px rgba(59,130,246,0.25);
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 900px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+</style>
+
+<div class="dashboard">
+
+    <div class="title">Dashboard</div>
+    <div class="subtitle">
+        Welcome back — manage your store and shopping activity in one place.
+    </div>
+
+    
+    <div class="grid">
+
+        <div class="card">
+            <div class="label">Cart Items</div>
+            <div class="value">
+                <?php
+                    $cartCount = array_sum(array_column(session()->get('cart', []), 'quantity'));
+                ?>
+                <?php echo e($cartCount); ?>
+
             </div>
         </div>
+
+        <div class="card">
+            <div class="label">My Orders</div>
+            <div class="value">📦</div>
+        </div>
+
+        <div class="card">
+            <div class="label">Account</div>
+            <div class="value">Active</div>
+        </div>
+
     </div>
- <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?>
-<?php /**PATH C:\laragon\www\simple-store\resources\views/dashboard.blade.php ENDPATH**/ ?>
+
+    
+    <div class="section">
+
+        <h3>Quick Actions</h3>
+
+        <div class="item">
+            <span>Browse Products</span>
+            <a href="<?php echo e(route('products.index')); ?>" class="btn">Open</a>
+        </div>
+
+        <div class="item">
+            <span>View Cart</span>
+            <a href="<?php echo e(route('cart.index')); ?>" class="btn">Open</a>
+        </div>
+
+        <div class="item">
+            <span>Order History</span>
+            <a href="<?php echo e(route('orders.index')); ?>" class="btn">Open</a>
+        </div>
+
+        <div class="item">
+            <span>Admin Panel (if admin)</span>
+            <a href="<?php echo e(route('admin.dashboard')); ?>" class="btn">Open</a>
+        </div>
+
+    </div>
+
+</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\simple-store\resources\views/dashboard.blade.php ENDPATH**/ ?>

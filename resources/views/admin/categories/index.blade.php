@@ -1,42 +1,132 @@
-@extends('admin.layouts.admin')
+@extends('layouts.admin')
 
 @section('content')
 
-<h1 class="text-2xl font-bold mb-4">Categories</h1>
+<style>
+    body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui;
+        background: radial-gradient(circle at top, #111827 0%, #0b1220 100%);
+        color: #e5e7eb;
+    }
 
-<a href="{{ route('admin.categories.create') }}"
-   class="bg-blue-600 text-white px-4 py-2 rounded">
-    Add Category
-</a>
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        padding: 30px;
+    }
 
-<table class="w-full mt-4 border">
-    <thead>
-        <tr class="bg-gray-200">
-            <th class="p-2">Name</th>
-            <th class="p-2">Slug</th>
-            <th class="p-2">Actions</th>
-        </tr>
-    </thead>
+    /* TITLE */
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 25px;
+    }
 
-    <tbody>
-        @foreach($categories as $category)
-        <tr class="border-b">
-            <td class="p-2">{{ $category->name }}</td>
-            <td class="p-2">{{ $category->slug }}</td>
-            <td class="p-2">
-                <a href="{{ route('admin.categories.edit', $category->id) }}"
-                   class="text-yellow-600">Edit</a>
+    /* GRID */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 18px;
+    }
 
-                <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                      method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button class="text-red-600">Delete</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+    /* CARD */
+    .card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 18px;
+        backdrop-filter: blur(12px);
+        transition: 0.25s ease;
+
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeUp 0.5s ease forwards;
+    }
+
+    .card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(59,130,246,0.4);
+    }
+
+    .card h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .card p {
+        color: #9ca3af;
+        font-size: 14px;
+        margin-top: 8px;
+        line-height: 1.4;
+    }
+
+    .meta {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* EMPTY STATE */
+    .empty {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 40px;
+        text-align: center;
+        border-radius: 18px;
+        color: #9ca3af;
+    }
+
+    /* ANIMATION */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+</style>
+
+<div class="container">
+
+    <h1>Categories</h1>
+
+    <div class="grid">
+
+        @forelse($categories as $category)
+
+            <div class="card">
+
+                <h3>{{ $category->name }}</h3>
+
+                @if($category->description)
+                    <p>{{ $category->description }}</p>
+                @else
+                    <p>No description available</p>
+                @endif
+
+                <div class="meta">
+                    Category ID: #{{ $category->id }}
+                </div>
+
+            </div>
+
+        @empty
+
+            <div class="empty">
+                No categories found yet.
+            </div>
+
+        @endforelse
+
+    </div>
+
+</div>
 
 @endsection

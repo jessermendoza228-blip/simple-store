@@ -2,68 +2,136 @@
 
 @section('content')
 
-<h1 class="text-2xl font-bold mb-4">Add Product</h1>
+<style>
+    body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui;
+        background: radial-gradient(circle at top, #111827 0%, #0b1220 100%);
+        color: #e5e7eb;
+    }
 
-<form method="POST"
-      action="{{ route('admin.products.store') }}"
-      enctype="multipart/form-data"
-      class="space-y-3">
+    .container {
+        max-width: 900px;
+        margin: auto;
+        padding: 30px;
+    }
 
-    @csrf
+    /* TITLE */
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        animation: fadeDown 0.4s ease;
+    }
 
-    <input type="text" name="name" placeholder="Product Name"
-           class="border p-2 w-full">
+    /* FORM CARD */
+    .form-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 25px;
+        backdrop-filter: blur(12px);
 
-    <input type="number" name="price" placeholder="Price"
-           class="border p-2 w-full">
+        animation: fadeUp 0.5s ease;
+    }
 
-    <input type="number" name="stock" placeholder="Stock"
-           class="border p-2 w-full">
+    /* INPUTS */
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 14px;
 
-    <textarea name="description" placeholder="Description"
-              class="border p-2 w-full"></textarea>
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
 
-    <input type="file" name="image"
-           class="border p-2 w-full">
+        color: #e5e7eb;
+        outline: none;
 
-    <button class="bg-blue-500 text-white px-4 py-2 rounded">
-        Save Product
-    </button>
+        transition: 0.2s ease;
+    }
 
-</form>
+    input:focus, textarea:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 10px rgba(59,130,246,0.3);
+    }
 
-@endsection@extends('layouts.admin')
+    textarea {
+        resize: none;
+        height: 120px;
+    }
 
-@section('content')
+    /* BUTTON */
+    button {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        padding: 12px 18px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
 
-<h1 class="text-2xl font-bold mb-4">Add Product</h1>
+        transition: 0.2s ease;
+    }
 
-<form method="POST"
-      action="{{ route('admin.products.store') }}"
-      enctype="multipart/form-data"
-      class="space-y-3">
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(59,130,246,0.3);
+    }
 
-    @csrf
+    /* ANIMATION */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-    <input type="text" name="name" placeholder="Product Name"
-           class="border p-2 w-full">
+    @keyframes fadeDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-    <input type="number" name="price" placeholder="Price"
-           class="border p-2 w-full">
+</style>
 
-    <input type="number" name="stock" placeholder="Stock"
-           class="border p-2 w-full">
+<div class="container">
 
-    <textarea name="description" placeholder="Description"
-              class="border p-2 w-full"></textarea>
+    <h1>➕ Add Product</h1>
 
-    <input type="file" name="image"
-           class="border p-2 w-full">
+    <div class="form-card">
 
-    <button class="bg-blue-500 text-white px-4 py-2 rounded">
-        Save Product
-    </button>
+        <form method="POST"
+              action="{{ route('admin.products.store') }}"
+              enctype="multipart/form-data">
 
-</form>
+            @csrf
+
+            <input type="text" name="name" placeholder="Product Name">
+
+            <input type="number" name="price" placeholder="Price">
+
+            <input type="number" name="stock" placeholder="Stock">
+
+            <textarea name="description" placeholder="Description"></textarea>
+
+            <input type="file" name="image">
+
+            <button type="submit">Save Product</button>
+
+        </form>
+
+    </div>
+
+</div>
 
 @endsection
