@@ -1,152 +1,226 @@
 <?php $__env->startSection('content'); ?>
 
 <style>
-.cart-container {
-    max-width: 900px;
-    margin: auto;
-    animation: fadeIn 0.6s ease-in-out;
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    font-family: Arial, sans-serif;
 }
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.checkout-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* =========================
+   CART ITEM
+========================= */
 
 .cart-item {
-    background: white;
-    padding: 20px;
-    margin-bottom: 15px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    color: #111 !important;
 }
 
-.cart-item:hover {
-    transform: scale(1.02);
+/* 🔥 FIX PRODUCT NAME VISIBILITY */
+.cart-item strong {
+    color: #000 !important;
+    font-weight: 700;
 }
 
-button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
+/* =========================
+   BUTTON
+========================= */
 
-.btn-update {
-    background: #f59e0b;
-    color: white;
-}
-
-.btn-remove {
-    background: #ef4444;
-    color: white;
-}
-
-.btn-checkout {
-    background: #2563eb;
-    color: white;
-    padding: 10px 20px;
-    margin-top: 20px;
-    border-radius: 8px;
+.btn {
     width: 100%;
-    font-size: 1.1rem;
+    padding: 12px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    font-size: 15px;
 }
 
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(20px);}
-    to {opacity: 1; transform: translateY(0);}
+.btn:hover {
+    transform: scale(1.03);
+    filter: brightness(1.1);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 360px;
+    animation: pop 0.3s ease;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    color: #111 !important;
+    background: #fff;
+}
+
+/* =========================
+   TEXT FIX (GLOBAL SAFETY)
+========================= */
+
+.card,
+.cart-item,
+.checkout-container,
+.modal-content,
+h1, h2, h3, p {
+    color: #111827 !important;
+}
+
+/* =========================
+   EMPTY CART TEXT
+========================= */
+
+.empty-text {
+    color: #111;
+    text-align: center;
+    padding: 20px;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pop {
+    from {transform: scale(0.8); opacity:0;}
+    to {transform: scale(1); opacity:1;}
 }
 </style>
 
-<div class="cart-container">
-    <h1>Your Cart</h1>
+<div class="checkout-container">
 
-    <?php if(!empty($cart) && count($cart) > 0): ?>
-        <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="cart-item">
-                <h3><?php echo e($item['name']); ?></h3>
-                <p>Price: ₱<?php echo e(number_format($item['price'], 2)); ?></p>
-                <p>Qty: <?php echo e($item['quantity']); ?></p>
-                <p>Subtotal: ₱<?php echo e(number_format($item['price'] * $item['quantity'], 2)); ?></p>
+    
+    <div class="card">
+        <h1>🛒 Your Cart</h1>
 
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
-                    <form method="POST" action="<?php echo e(route('cart.update', $id)); ?>">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('PATCH'); ?>
-                        <input type="number" name="quantity" value="<?php echo e($item['quantity']); ?>" min="1" style="width: 60px;">
-                        <button type="submit" class="btn-update">Update</button>
-                    </form>
+        <?php $total = 0; ?>
 
-                    <form method="POST" action="<?php echo e(route('cart.remove', $id)); ?>">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('DELETE'); ?>
-                        <button type="submit" class="btn-remove">Remove</button>
-                    </form>
+        <?php if(!empty($cart)): ?>
+
+            <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                <?php
+                    $lineTotal = $item['price'] * $item['quantity'];
+                    $total += $lineTotal;
+                ?>
+
+                <div class="cart-item">
+                    <strong><?php echo e($item['name']); ?></strong><br>
+                    Qty: <?php echo e($item['quantity']); ?><br>
+                    ₱<?php echo e($lineTotal); ?>
+
                 </div>
-            </div>
-        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-        <div style="margin-top: 30px; text-align: right;">
-            <h2>Total: ₱<?php echo e(number_format($total, 2)); ?></h2>
-            
-            <form id="checkoutForm">
-                <?php echo csrf_field(); ?>
-                <button type="submit" id="checkout-btn" class="btn-checkout">
-                    Checkout
-                </button>
-            </form>
-        </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-    <?php else: ?>
-        <div style="text-align: center; padding: 50px;">
-            <p>Your cart is empty.</p>
-            <a href="<?php echo e(url('/')); ?>" class="btn-update" style="text-decoration: none; padding: 10px 20px;">Go Shopping</a>
-        </div>
-    <?php endif; ?>
+        <?php else: ?>
+
+            <p class="empty-text">
+                Your cart is empty 🛒
+            </p>
+
+        <?php endif; ?>
+
+        <h2>Total: ₱<?php echo e($total); ?></h2>
+    </div>
+
+    
+    <button class="btn" onclick="openModal()">
+        Checkout ⚡
+    </button>
+
 </div>
 
 
+<div class="modal" id="checkoutModal">
+    <div class="modal-content">
+
+        <h2>Checkout Details</h2>
+
+        <form method="POST" action="<?php echo e(route('checkout.store')); ?>">
+            <?php echo csrf_field(); ?>
+
+            <input type="text" name="name" placeholder="Full Name" required>
+
+            <input type="email" name="email" placeholder="Email Address" required>
+
+            <input type="text" name="phone" placeholder="Mobile Number" required>
+
+            <textarea name="address" placeholder="Delivery Address" required></textarea>
+
+            <button class="btn" type="submit" style="margin-top:12px;">
+                Confirm Order ✅
+            </button>
+        </form>
+
+        <br>
+
+        <button onclick="closeModal()"
+            style="background:red;color:white;padding:10px;border:none;border-radius:8px;width:100%;">
+            Cancel
+        </button>
+
+    </div>
+</div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const checkoutForm = document.getElementById('checkoutForm');
-    const checkoutBtn = document.getElementById('checkout-btn');
+function openModal() {
+    document.getElementById('checkoutModal').style.display = 'flex';
+}
 
-    if (checkoutForm) {
-        checkoutForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Disable button to prevent double-clicking
-            checkoutBtn.disabled = true;
-            checkoutBtn.innerText = 'Processing...';
-
-            fetch("<?php echo e(route('checkout.store')); ?>", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
-                },
-                body: JSON.stringify({}) 
-            })
-            .then(async response => {
-                const data = await response.json();
-                if (response.ok) {
-                    return data;
-                } else {
-                    // If the server returns an error (like the product_id issue)
-                    throw new Error(data.message || 'Server Error');
-                }
-            })
-            .then(data => {
-                alert('Order placed successfully!');
-                window.location.href = "<?php echo e(url('/orders')); ?>"; 
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Checkout failed: ' + error.message);
-                
-                // Re-enable button so user can try again
-                checkoutBtn.disabled = false;
-                checkoutBtn.innerText = 'Checkout';
-            });
-        });
-    }
-});
+function closeModal() {
+    document.getElementById('checkoutModal').style.display = 'none';
+}
 </script>
 
 <?php $__env->stopSection(); ?>

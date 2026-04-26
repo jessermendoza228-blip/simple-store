@@ -20,8 +20,28 @@
     h1 {
         font-size: 28px;
         font-weight: 800;
-        letter-spacing: -0.5px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
+        color: #ffffff;
+        animation: fadeDown 0.4s ease;
+    }
+
+    /* ADD BUTTON */
+    .btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: rgba(59,130,246,0.2);
+        border: 1px solid rgba(59,130,246,0.4);
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+    .btn:hover {
+        background: rgba(59,130,246,0.35);
+        transform: translateY(-2px);
     }
 
     /* GRID */
@@ -35,59 +55,43 @@
     .card {
         background: rgba(255,255,255,0.06);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 18px;
+        border-radius: 16px;
         padding: 18px;
         backdrop-filter: blur(12px);
+
         transition: 0.25s ease;
+        animation: fadeUp 0.5s ease forwards;
 
         opacity: 0;
         transform: translateY(10px);
-        animation: fadeUp 0.5s ease forwards;
     }
 
     .card:hover {
         transform: translateY(-6px);
         border-color: rgba(59,130,246,0.4);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .card h3 {
         margin: 0;
         font-size: 18px;
         font-weight: 700;
+        color: #ffffff;
     }
 
     .card p {
-        color: #9ca3af;
+        margin: 6px 0;
         font-size: 14px;
-        margin-top: 8px;
-        line-height: 1.4;
+        color: #cbd5e1;
     }
 
     .meta {
-        margin-top: 12px;
+        margin-top: 10px;
         font-size: 12px;
-        color: #6b7280;
+        color: #9ca3af;
     }
 
-    /* BUTTONS */
-    .btn {
-        display: inline-block;
-        margin-bottom: 20px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        background: rgba(59,130,246,0.2);
-        border: 1px solid rgba(59,130,246,0.4);
-        color: #93c5fd;
-        text-decoration: none;
-        font-size: 14px;
-        transition: 0.2s ease;
-    }
-
-    .btn:hover {
-        background: rgba(59,130,246,0.35);
-        transform: translateY(-2px);
-    }
-
+    /* ACTIONS */
     .actions {
         margin-top: 12px;
         display: flex;
@@ -95,45 +99,60 @@
     }
 
     .actions a {
+        flex: 1;
+        text-align: center;
+        padding: 6px;
+        border-radius: 8px;
         font-size: 12px;
-        color: #60a5fa;
         text-decoration: none;
+        background: rgba(59,130,246,0.25);
+        color: #ffffff;
+        border: 1px solid rgba(59,130,246,0.4);
+        transition: 0.2s ease;
     }
 
     .actions a:hover {
-        text-decoration: underline;
+        transform: scale(1.05);
     }
 
     .actions button {
-        background: transparent;
-        border: 1px solid rgba(239,68,68,0.5);
-        color: #f87171;
-        padding: 4px 8px;
-        border-radius: 6px;
+        flex: 1;
+        background: rgba(239,68,68,0.2);
+        border: 1px solid rgba(239,68,68,0.4);
+        color: #ffffff;
+        padding: 6px;
+        border-radius: 8px;
         font-size: 12px;
         cursor: pointer;
         transition: 0.2s ease;
     }
 
     .actions button:hover {
-        background: rgba(239,68,68,0.15);
+        transform: scale(1.05);
     }
 
     /* EMPTY */
     .empty {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
-        padding: 40px;
         text-align: center;
-        border-radius: 18px;
+        padding: 40px;
         color: #9ca3af;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.08);
     }
 
-    /* ANIMATION */
+    /* ANIMATIONS */
     @keyframes fadeUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeDown {
         from {
             opacity: 0;
-            transform: translateY(12px);
+            transform: translateY(-10px);
         }
         to {
             opacity: 1;
@@ -144,7 +163,7 @@
 
 <div class="container">
 
-    <h1>Products</h1>
+    <h1>📦 Products</h1>
 
     <a href="{{ route('admin.products.create') }}" class="btn">
         + Add Product
@@ -166,7 +185,7 @@
                 @endif
 
                 <div class="meta">
-                    Product ID: #{{ $product->id }}
+                    ID: #{{ $product->id }}
                 </div>
 
                 <div class="actions">
@@ -178,10 +197,12 @@
                     <form method="POST"
                           action="{{ route('admin.products.destroy', $product->id) }}"
                           onsubmit="return confirm('Delete this product?')">
+
                         @csrf
                         @method('DELETE')
 
                         <button type="submit">Delete</button>
+
                     </form>
 
                 </div>

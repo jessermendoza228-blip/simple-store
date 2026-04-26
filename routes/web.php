@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\ProductController as CustomerProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +40,17 @@ require __DIR__.'/auth.php';
 
 /*
 |--------------------------------------------------------------------------
-| DASHBOARD
+| DASHBOARD (FIXED)
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -109,12 +114,15 @@ Route::middleware(['auth'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | CHECKOUT (FIXED)
+    | CHECKOUT
     |--------------------------------------------------------------------------
     */
 
-    Route::post('/checkout', [CartController::class, 'checkout'])
+    Route::post('/checkout', [CheckoutController::class, 'store'])
         ->name('checkout.store');
+
+    Route::get('/checkout/success/{order}', [CheckoutController::class, 'success'])
+        ->name('checkout.success');
 
     /*
     |--------------------------------------------------------------------------
@@ -128,6 +136,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])
         ->name('orders.show');
 
+    // ✅ CANCEL ORDER (ADDED FIX)
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
+
     /*
     |--------------------------------------------------------------------------
     | PROFILE
@@ -140,12 +152,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy']);
 
     /*
     |--------------------------------------------------------------------------
-    | RESET CART (DEBUG TOOL)
+    | DEBUG TOOL
     |--------------------------------------------------------------------------
     */
 
@@ -153,4 +164,5 @@ Route::middleware(['auth'])->group(function () {
         session()->forget('cart');
         return "Cart cleared";
     });
+
 });

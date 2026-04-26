@@ -1,6 +1,6 @@
-@extends('layouts.admin')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <style>
 body {
@@ -120,9 +120,9 @@ button:hover {
 
     <div class="form-box">
 
-        <form method="POST" action="{{ route('admin.categories.store') }}">
+        <form method="POST" action="<?php echo e(route('admin.categories.store')); ?>">
 
-            @csrf
+            <?php echo csrf_field(); ?>
 
             <label>Category Name</label>
             <input type="text" name="name" placeholder="Enter category name" required>
@@ -136,10 +136,11 @@ button:hover {
 
     </div>
 
-    <a href="{{ route('admin.categories.index') }}" class="back">
+    <a href="<?php echo e(route('admin.categories.index')); ?>" class="back">
         ← Back to Categories
     </a>
 
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\simple-store\resources\views/admin/categories/create.blade.php ENDPATH**/ ?>

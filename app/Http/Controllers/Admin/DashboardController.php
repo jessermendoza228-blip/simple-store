@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\User;
-use App\Models\Category;
 
 class DashboardController extends Controller
 {
@@ -17,8 +17,9 @@ class DashboardController extends Controller
             'totalCategories' => Category::count(),
             'totalOrders' => Order::count(),
             'totalUsers' => User::count(),
-            'totalRevenue' => Order::sum('total_amount'),
-            'recentOrders' => Order::latest()->take(5)->get(),
+
+            // ONLY delivered orders = revenue
+            'totalRevenue' => Order::where('status', 'delivered')->sum('total'),
         ]);
     }
 }

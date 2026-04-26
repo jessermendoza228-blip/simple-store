@@ -3,29 +3,40 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class OrderController extends Controller
 {
+    // SHOW ALL ORDERS
     public function index()
     {
-        $orders = Order::latest()->paginate(15);
+        $orders = Order::with('orderItems.product')
+            ->latest()
+            ->get();
+
         return view('admin.orders.index', compact('orders'));
     }
 
+    // SHOW SINGLE ORDER
     public function show(Order $order)
     {
+        $order->load('orderItems.product');
+
         return view('admin.orders.show', compact('order'));
     }
 
+    // UPDATE ORDER STATUS (FIXED)
     public function update(Request $request, Order $order)
     {
-        $order->update([
-            'status'=>$request->status
+        $request->validate([
+            'status' => 'required|string'
         ]);
 
-        return redirect()->route('admin.orders.show',$order)
-        ->with('success','Order updated');
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->back()
+            ->with('success', 'Order updated successfully!');
     }
 }

@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        $categories = Category::latest()->get();
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -23,16 +23,17 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories'
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
         Category::create([
             'name' => $request->name,
-            'slug' => Str::slug($request->name)
+            'description' => $request->description,
         ]);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category created');
+            ->with('success', 'Category created successfully!');
     }
 
     public function edit(Category $category)
@@ -42,24 +43,19 @@ class CategoryController extends Controller
 
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
         $category->update([
             'name' => $request->name,
-            'slug' => Str::slug($request->name)
+            'description' => $request->description,
         ]);
 
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category updated');
+            ->with('success', 'Category updated!');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted');
+        return back()->with('success', 'Category deleted!');
     }
 }

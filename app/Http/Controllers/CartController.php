@@ -16,7 +16,7 @@ class CartController extends Controller
         $total = 0;
 
         foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+            $total += ($item['price'] ?? 0) * ($item['quantity'] ?? 0);
         }
 
         return view('cart.index', compact('cart', 'total'));
@@ -24,18 +24,16 @@ class CartController extends Controller
 
     public function add(Request $request, Product $product)
     {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
+        // FIX: allow default quantity = 1 if not sent
+        $qty = $request->quantity ?? 1;
 
         $cart = session()->get('cart', []);
-        $qty = $request->quantity;
 
-        if (isset($cart[$product->id])) {
-            $qty += $cart[$product->id]['quantity'];
-        }
+        $existingQty = $cart[$product->id]['quantity'] ?? 0;
+        $newQty = $existingQty + $qty;
 
-        if ($qty > $product->stock) {
+        // STOCK CHECK
+        if ($newQty > $product->stock) {
             return back()->with('error', 'Not enough stock!');
         }
 
@@ -43,8 +41,8 @@ class CartController extends Controller
             'product_id' => $product->id,
             'name' => $product->name,
             'price' => $product->price,
-            'quantity' => $qty,
-            'image' => $product->image,
+            'quantity' => $newQty,
+            'image' => $product->image ?? null,
         ];
 
         session()->put('cart', $cart);
@@ -56,9 +54,19 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity'] = $request->quantity;
+        if (!isset($cart[$id])) {
+            return back()->with('error', 'Item not found in cart.');
         }
+
+        $quantity = max(1, (int) $request->quantity);
+
+        $product = Product::find($id);
+
+        if ($product && $quantity > $product->stock) {
+            return back()->with('error', 'Not enough stock!');
+        }
+
+        $cart[$id]['quantity'] = $quantity;
 
         session()->put('cart', $cart);
 
@@ -69,7 +77,9 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        unset($cart[$id]);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
 
         session()->put('cart', $cart);
 
@@ -79,6 +89,7 @@ class CartController extends Controller
     public function clear()
     {
         session()->forget('cart');
+
         return back()->with('success', 'Cart cleared!');
     }
 
@@ -96,16 +107,15 @@ class CartController extends Controller
 
             $order = Order::create([
                 'user_id' => Auth::id(),
-                'total' => 0
+                'total' => 0,
+                'status' => 'pending'
             ]);
 
             $total = 0;
 
             foreach ($cart as $item) {
 
-                if (!isset($item['product_id'])) {
-                    continue;
-                }
+                if (!isset($item['product_id'])) continue;
 
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -115,6 +125,13 @@ class CartController extends Controller
                 ]);
 
                 $total += $item['price'] * $item['quantity'];
+
+                // ✅ DECREMENT STOCK (IMPORTANT FOR YOUR REQUIREMENT)
+                $product = Product::find($item['product_id']);
+                if ($product) {
+                    $product->stock -= $item['quantity'];
+                    $product->save();
+                }
             }
 
             $order->update(['total' => $total]);

@@ -3,44 +3,143 @@
 <head>
     <title>Admin Panel</title>
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css','resources/js/app.js']); ?>
+
+    <style>
+        /* ===== GLOBAL ===== */
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui;
+            background: #0b1220; /* deep modern dark */
+            color: #e5e7eb;
+        }
+
+        /* ===== LAYOUT ===== */
+        .flex {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        aside {
+            width: 260px;
+            background: #0f172a;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            padding: 20px;
+        }
+
+        aside h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #cbd5e1 !important;
+            text-decoration: none;
+            transition: 0.2s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            background: rgba(59,130,246,0.25);
+            color: #ffffff !important;
+            transform: translateX(4px);
+        }
+
+        /* ===== MAIN AREA ===== */
+        main {
+            flex: 1;
+            padding: 30px;
+            background: radial-gradient(circle at top, #111827, #0b1220);
+            color: #e5e7eb;
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .success-box {
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.3);
+            color: #22c55e;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        /* ===== FORM FIX (IMPORTANT) ===== */
+        input,
+        textarea,
+        select {
+            color: #000 !important;         /* TEXT ALWAYS VISIBLE */
+            background: #ffffff !important;
+            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+        }
+
+        option {
+            color: #000 !important;
+            background: #ffffff !important;
+        }
+
+        label {
+            color: #e5e7eb;
+        }
+
+        /* ===== BUTTONS ===== */
+        button {
+            cursor: pointer;
+        }
+
+        /* ===== ANIMATION ===== */
+        main {
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
 </head>
 
-<body class="bg-gray-200 text-gray-900">
+<body>
 
-<div class="flex min-h-screen">
+<div class="flex">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-gray-900 text-white p-5">
+    <aside>
 
-        <h1 class="text-xl font-bold mb-6">Admin Panel</h1>
+        <h1>Admin Panel</h1>
 
-        <nav class="space-y-2">
+        <nav>
 
-            <a class="block p-2 rounded hover:bg-gray-700" href="<?php echo e(route('admin.dashboard')); ?>">
-                Dashboard
-            </a>
-
-            <a class="block p-2 rounded hover:bg-gray-700" href="<?php echo e(route('admin.products.index')); ?>">
-                Products
-            </a>
-
-            <a class="block p-2 rounded hover:bg-gray-700" href="<?php echo e(route('admin.categories.index')); ?>">
-                Categories
-            </a>
-
-            <a class="block p-2 rounded hover:bg-gray-700" href="<?php echo e(route('admin.orders.index')); ?>">
-                Orders
-            </a>
+            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+            <a href="<?php echo e(route('admin.products.index')); ?>">Products</a>
+            <a href="<?php echo e(route('admin.categories.index')); ?>">Categories</a>
+            <a href="<?php echo e(route('admin.orders.index')); ?>">Orders</a>
 
         </nav>
 
     </aside>
 
     <!-- MAIN -->
-    <main class="flex-1 p-8">
+    <main>
 
         <?php if(session('success')): ?>
-            <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+            <div class="success-box">
                 <?php echo e(session('success')); ?>
 
             </div>

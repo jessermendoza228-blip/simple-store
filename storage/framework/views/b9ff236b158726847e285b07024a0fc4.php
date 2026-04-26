@@ -4,7 +4,7 @@
     body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-        color: #e5e7eb;
+        color: #111827;
         background: radial-gradient(circle at top, #1f2937 0%, #0f172a 100%);
     }
 
@@ -20,16 +20,12 @@
         font-weight: 800;
         margin-bottom: 8px;
         letter-spacing: -1px;
-
-        background: linear-gradient(90deg, #ffffff, #9ca3af);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-
+        color: #ffffff;
         animation: fadeDown 0.6s ease;
     }
 
     .subtitle {
-        color: #9ca3af;
+        color: #cbd5e1;
         margin-bottom: 28px;
         font-size: 14px;
     }
@@ -44,31 +40,24 @@
 
     /* CARD */
     .card {
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
         border-radius: 16px;
         padding: 22px;
-
         backdrop-filter: blur(12px);
-
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-
         transition: all 0.25s ease;
-
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeUp 0.6s ease forwards;
+        color: #111827; /* FIX TEXT VISIBILITY */
     }
 
     .card:hover {
         transform: translateY(-6px);
-        border-color: rgba(255,255,255,0.2);
-        box-shadow: 0 18px 50px rgba(0,0,0,0.5);
+        border-color: rgba(255,255,255,0.25);
     }
 
     .label {
         font-size: 13px;
-        color: #9ca3af;
+        color: #e5e7eb;
         margin-bottom: 6px;
     }
 
@@ -80,11 +69,10 @@
 
     /* SECTION */
     .section {
-        background: rgba(255,255,255,0.04);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
         border-radius: 16px;
         padding: 22px;
-
         backdrop-filter: blur(10px);
     }
 
@@ -92,7 +80,7 @@
         font-size: 18px;
         font-weight: 700;
         margin-bottom: 14px;
-        color: #f3f4f6;
+        color: #ffffff;
     }
 
     /* ACTIONS */
@@ -100,17 +88,26 @@
         display: flex;
         justify-content: space-between;
         padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-
+        border-bottom: 1px solid rgba(255,255,255,0.08);
         font-size: 14px;
-        color: #cbd5e1;
 
+        color: #111827; /* FIX: make text visible */
+        background: rgba(255,255,255,0.04);
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
         transition: 0.2s ease;
     }
 
     .item:hover {
         transform: translateX(6px);
-        color: #ffffff;
+        background: rgba(255,255,255,0.1);
+    }
+
+    .item span {
+        color: #ffffff; /* FIX LABEL VISIBILITY */
+        font-weight: 500;
     }
 
     .item:last-child {
@@ -121,14 +118,11 @@
     .btn {
         padding: 7px 14px;
         border-radius: 10px;
-
         background: linear-gradient(135deg, #3b82f6, #6366f1);
         color: white;
-
         font-size: 12px;
         font-weight: 600;
         text-decoration: none;
-
         transition: 0.2s ease;
         box-shadow: 0 10px 20px rgba(59,130,246,0.25);
     }
@@ -138,26 +132,9 @@
     }
 
     /* ANIMATIONS */
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(25px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
     @keyframes fadeDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from {opacity: 0; transform: translateY(-10px);}
+        to {opacity: 1; transform: translateY(0);}
     }
 
     @media (max-width: 900px) {
@@ -172,7 +149,7 @@
 
     <div class="title">Dashboard</div>
     <div class="subtitle">
-        Welcome back — manage your store and shopping activity in one place.
+       JM༼ つ ◕_◕ ༽つ
     </div>
 
     

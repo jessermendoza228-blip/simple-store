@@ -3,194 +3,215 @@
 @section('content')
 
 <style>
-    /* =========================
-       PREMIUM GREY DESIGN SYSTEM
-    ========================== */
+/* =========================
+   PREMIUM MODERN UI UPGRADE
+========================= */
 
-    body {
-        background: linear-gradient(180deg, #b9bcbe 0%, #354055 100%);
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-        color: #111827;
-    }
+body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    color: #e5e7eb;
+}
 
-    .orders-container {
-        max-width: 980px;
-        margin: auto;
-        padding: 40px 24px;
-    }
+/* CONTAINER */
+.orders-container {
+    max-width: 980px;
+    margin: auto;
+    padding: 40px 24px;
+}
 
-    /* =========================
-       TITLE (ELEGANT TYPE)
-    ========================== */
+/* TITLE */
+.title {
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeDown 0.6s ease;
+}
 
-    .title {
-        font-size: 36px;
-        font-weight: 800;
-        letter-spacing: -1px;
-        color: #111827;
-        margin-bottom: 30px;
-    }
+/* EMPTY STATE */
+.empty {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 60px;
+    text-align: center;
+    color: #9ca3af;
+}
 
-    /* =========================
-       EMPTY STATE (SOFT CARD)
-    ========================== */
+/* ORDER CARD */
+.order {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
+    animation: fadeUp 0.5s ease forwards;
+}
 
-    .empty {
-        background: rgba(185, 181, 181, 0.8);
-        backdrop-filter: blur(10px);
-        border: 1px solid #e5e7eb;
-        border-radius: 18px;
-        padding: 60px;
-        text-align: center;
-        color: #6b7280;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
+.order:hover {
+    transform: translateY(-6px);
+    border-color: rgba(59,130,246,0.5);
+    box-shadow: 0 18px 40px rgba(59,130,246,0.15);
+}
 
-    /* =========================
-       ORDER CARD (MODERN GLASS GREY)
-    ========================== */
+/* HEADER */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .order {
-        background: rgba(255,255,255,0.75);
-        backdrop-filter: blur(12px);
+/* ORDER ID */
+.order-id {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff; /* FIX */
+}
 
-        border: 1px solid #e5e7eb;
-        border-radius: 18px;
+/* BADGE */
+.badge {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #ffffff; /* FIX */
+    font-weight: 600;
+}
 
-        padding: 22px;
-        margin-bottom: 18px;
+/* ITEMS */
+.items {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
 
-        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #d1d5db;
+    transition: 0.2s;
+}
 
-        transition: all 0.25s ease;
+/* FIX PRODUCT NAME + QTY */
+.item span:first-child {
+    color: #ffffff !important;
+    font-weight: 600;
+}
 
-        opacity: 0;
-        transform: translateY(14px);
-        animation: fadeUp 0.5s ease forwards;
-    }
+/* FIX PRICE */
+.item span:last-child {
+    color: #ffffff !important;
+    font-weight: 600;
+}
 
-    .order:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 18px 40px rgba(0,0,0,0.08);
-        border-color: #d1d5db;
-    }
+.item:hover {
+    transform: translateX(6px);
+    color: #ffffff;
+}
 
-    /* =========================
-       HEADER SECTION
-    ========================== */
+/* TOTAL */
+.total {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
 
-    .order-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 14px;
-    }
+.total span {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
 
-    .order-id {
-        font-size: 18px;
-        font-weight: 700;
-        letter-spacing: -0.4px;
-        color: #111827;
-    }
+/* CANCEL BUTTON */
+.cancel-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(239,68,68,0.2);
+}
 
-    /* =========================
-       STATUS BADGE (ELEGANT GREY)
-    ========================== */
+.cancel-btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 15px 30px rgba(239,68,68,0.3);
+}
 
-    .badge {
-        background: #f3f4f6;
-        color: #374151;
+/* MODAL BACKDROP */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
 
-        padding: 6px 12px;
-        border-radius: 999px;
+/* MODAL BOX */
+.modal-box {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 22px;
+    border-radius: 14px;
+    width: 340px;
+    color: white;
+}
 
-        font-size: 12px;
-        font-weight: 600;
+/* TEXTAREA */
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
 
-        border: 1px solid #e5e7eb;
-    }
+/* ANIMATIONS */
+@keyframes fadeUp {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
 
-    /* =========================
-       ITEMS LIST
-    ========================== */
-
-    .items {
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid #e5e7eb;
-    }
-
-    .item {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 0;
-
-        font-size: 14px;
-        color: #4b5563;
-
-        transition: all 0.2s ease;
-    }
-
-    .item:hover {
-        color: #111827;
-        transform: translateX(6px);
-    }
-
-    .item strong {
-        font-weight: 500;
-    }
-
-    /* =========================
-       TOTAL (MINIMAL PREMIUM LOOK)
-    ========================== */
-
-    .total {
-        margin-top: 16px;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .total span {
-        background: linear-gradient(135deg, #111827, #1f2937);
-        color: white;
-
-        padding: 8px 16px;
-        border-radius: 999px;
-
-        font-size: 13px;
-        font-weight: 600;
-
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
-
-    /* =========================
-       ANIMATION (SMOOTH ENTRY)
-    ========================== */
-
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(18px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .order:nth-child(1) { animation-delay: 0.05s; }
-    .order:nth-child(2) { animation-delay: 0.1s; }
-    .order:nth-child(3) { animation-delay: 0.15s; }
-    .order:nth-child(4) { animation-delay: 0.2s; }
+@keyframes fadeDown {
+    from {opacity: 0; transform: translateY(-10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
 </style>
+
 <div class="orders-container">
 
     <h2 class="title">My Orders</h2>
 
-    @if($orders->isEmpty())
-        <div class="empty">
-            🛒 No orders yet. Start shopping to see your order history here.
+    @if(session('success'))
+        <div class="alert">
+            {{ session('success') }}
         </div>
+    @endif
+
+    @if($orders->isEmpty())
+        <div class="empty">🛒 No orders yet.</div>
     @endif
 
     @foreach($orders as $order)
@@ -198,37 +219,43 @@
     <div class="order">
 
         <div class="order-header">
+
             <div class="order-id">
                 Order #{{ $order->id }}
             </div>
 
-            <div class="badge">
-                {{ $order->status ?? 'Completed' }}
+            <div style="display:flex;gap:10px;align-items:center;">
+
+                <div class="badge">
+                    {{ $order->status }}
+                </div>
+
+                @if($order->status !== 'cancelled')
+                    <button class="cancel-btn"
+                        onclick="openModal({{ $order->id }})">
+                        Cancel
+                    </button>
+                @endif
+
             </div>
+
         </div>
 
         <div class="items">
-
-            @if($order->orderItems && $order->orderItems->isNotEmpty())
-                @foreach($order->orderItems as $item)
-                    <div class="item">
-                        <strong>
-                            {{ $item->product->name ?? 'Deleted Product' }}
-                            (x{{ $item->quantity }})
-                        </strong>
-                        <span>₱{{ number_format($item->price, 2) }}</span>
-                    </div>
-                @endforeach
-            @else
-                <div class="item" style="color:#9ca3af;">
-                    No items found
+            @foreach($order->orderItems as $item)
+                <div class="item">
+                    <span>
+                        {{ $item->product->name }} x{{ $item->quantity }}
+                    </span>
+                    <span>
+                        ₱{{ $item->price }}
+                    </span>
                 </div>
-            @endif
-
+            @endforeach
         </div>
 
         <div class="total">
-            <span>Total: ₱{{ number_format($order->total, 2) }}</span>
+            <span>Total: ₱{{ $order->total }}</span>
         </div>
 
     </div>
@@ -236,5 +263,43 @@
     @endforeach
 
 </div>
+
+<div id="cancelModal" class="modal">
+
+    <div class="modal-box">
+
+        <h3>Cancel Order</h3>
+
+        <form id="cancelForm" method="POST">
+            @csrf
+
+            <textarea name="cancel_reason"
+                      placeholder="Reason for cancellation"
+                      required></textarea>
+
+            <button type="submit" class="cancel-btn" style="width:100%;">
+                Confirm Cancel
+            </button>
+        </form>
+
+        <button onclick="closeModal()" style="margin-top:10px;width:100%;">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+function openModal(orderId) {
+    document.getElementById('cancelModal').style.display = 'flex';
+    document.getElementById('cancelForm').action =
+        "{{ url('/orders') }}/" + orderId + "/cancel";
+}
+
+function closeModal() {
+    document.getElementById('cancelModal').style.display = 'none';
+}
+</script>
 
 @endsection

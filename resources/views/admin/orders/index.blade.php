@@ -3,90 +3,110 @@
 @section('content')
 
 <style>
-    body {
-        margin: 0;
-        font-family: ui-sans-serif, system-ui;
-        background: radial-gradient(circle at top, #111827 0%, #0b1220 100%);
-        color: #e5e7eb;
-    }
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+}
 
-    .container {
-        max-width: 1100px;
-        margin: auto;
-        padding: 30px;
-    }
+h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #fff;
+}
 
-    h1 {
-        font-size: 28px;
-        font-weight: 800;
-        margin-bottom: 20px;
-    }
+/* TABLE */
+.table-wrapper {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    overflow: hidden;
+    backdrop-filter: blur(12px);
+}
 
-    /* TABLE WRAPPER */
-    .table-wrapper {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 16px;
-        overflow: hidden;
-        backdrop-filter: blur(12px);
-    }
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+thead {
+    background: rgba(0,0,0,0.4);
+}
 
-    thead {
-        background: rgba(0,0,0,0.4);
-    }
+th, td {
+    padding: 14px;
+    text-align: left;
+    font-size: 14px;
+    color: #ffffff;
+}
 
-    th, td {
-        padding: 14px;
-        text-align: left;
-        font-size: 14px;
+tbody tr {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transition: 0.2s ease;
+}
 
-        /* ✅ FIX ADDED HERE */
-        color: #ffffff;
-    }
+tbody tr:hover {
+    background: rgba(255,255,255,0.05);
+    transform: scale(1.01);
+}
 
-    tbody tr {
-        border-top: 1px solid rgba(255,255,255,0.08);
-        transition: 0.2s ease;
-    }
+/* BUTTON */
+.btn {
+    background: rgba(59,130,246,0.2);
+    border: 1px solid rgba(59,130,246,0.4);
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s ease;
+}
 
-    tbody tr:hover {
-        background: rgba(255,255,255,0.05);
-        transform: scale(1.01);
-    }
+.btn:hover {
+    background: rgba(59,130,246,0.35);
+    transform: translateY(-2px);
+}
 
-    /* BUTTON */
-    .btn {
-        background: rgba(219, 219, 219, 0.2);
-        border: 1px solid rgba(59,130,246,0.4);
-        color: #ffffff;
-        padding: 8px 12px;
-        border-radius: 10px;
-        text-decoration: none;
-        font-size: 13px;
-        transition: 0.2s ease;
-        display: inline-block;
-    }
+/* STATUS BADGES */
+.badge {
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
 
-    .btn:hover {
-        background: rgba(59,130,246,0.35);
-        transform: translateY(-2px);
-    }
+/* STATUS COLORS */
+.pending {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
 
-    /* STATUS BADGE */
-    .badge {
-        padding: 5px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        background: rgba(34,197,94,0.15);
-        color: #ffffff;
-        border: 1px solid rgba(34,197,94,0.3);
-    }
+.processing {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
 
+.shipped {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.delivered {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.cancelled {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
 </style>
 
 <div class="container">
@@ -120,8 +140,8 @@
                     <td>₱{{ number_format($order->total, 2) }}</td>
 
                     <td>
-                        <span class="badge">
-                            {{ $order->status ?? 'Completed' }}
+                        <span class="badge {{ $order->status }}">
+                            {{ ucfirst($order->status) }}
                         </span>
                     </td>
 
