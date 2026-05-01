@@ -66,9 +66,9 @@ p {
 
     <div class="card">
 
-        <h1>🎉 Order Successful!</h1>
-
-        <p>Thank you for your purchase.</p>
+      <h1>✅ Order Successful!</h1>
+<p>Thank you for your purchase.</p>
+<a href="/products">Continue Shopping</a>
 
         {{-- SAFETY FIX: prevents blank page errors --}}
         @if($order)

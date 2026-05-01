@@ -20,6 +20,22 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CheckoutController;
 
+
+
+use App\Http\Controllers\PaymentController;
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/payment/{order}', [PaymentController::class, 'pay'])
+        ->name('payment.pay');
+
+    Route::get('/payment/{order}/success', [PaymentController::class, 'success'])
+        ->name('payment.success');
+
+    Route::get('/payment/{order}/failure', [PaymentController::class, 'failure'])
+        ->name('payment.failure');
+});
+
 /*
 |--------------------------------------------------------------------------
 | HOME
@@ -163,6 +179,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reset-cart', function () {
         session()->forget('cart');
         return "Cart cleared";
+
+        Route::post('/xendit/webhook', [App\Http\Controllers\WebhookController::class, 'handle']);
+
+        
     });
 
 });

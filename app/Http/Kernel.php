@@ -34,6 +34,7 @@ class Kernel extends HttpKernel
 
     protected $middlewareAliases = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\AuthenticateSession::class,
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
     ];
 }
